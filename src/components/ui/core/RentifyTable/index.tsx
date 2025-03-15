@@ -11,12 +11,12 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-interface NMTableProps<TData, TValue> {
+interface RentifyTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
 }
 
-export function NMTable<TData, TValue>({ columns, data }: NMTableProps<TData, TValue>) {
+export function NMTable<TData, TValue>({ columns, data }: RentifyTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
         columns,

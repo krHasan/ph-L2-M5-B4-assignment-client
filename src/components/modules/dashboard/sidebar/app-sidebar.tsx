@@ -1,7 +1,24 @@
 "use client";
 
 import * as React from "react";
-import { Bot, Frame, LifeBuoy, Map, PieChart, Send, Settings, SquareTerminal } from "lucide-react";
+import {
+    Bot,
+    ClipboardList,
+    Frame,
+    HomeIcon,
+    LayoutDashboard,
+    LifeBuoy,
+    Map,
+    PieChart,
+    PlusCircle,
+    Send,
+    Settings,
+    SquareChartGantt,
+    SquareGanttChartIcon,
+    SquareTerminal,
+    UserCog,
+    UsersRoundIcon,
+} from "lucide-react";
 
 import {
     Sidebar,
@@ -15,84 +32,75 @@ import {
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import Link from "next/link";
-import Logo from "@/assets/logo-100.png";
-
-const data = {
-    navMain: [
-        {
-            title: "Dashboard",
-            url: "/user/dashboard",
-            icon: SquareTerminal,
-            isActive: true,
-        },
-        {
-            title: "Shop",
-            url: "/user/shop/products",
-            icon: Bot,
-            items: [
-                {
-                    title: "Manage Products",
-                    url: "/user/shop/products",
-                },
-                {
-                    title: "Manage Categories",
-                    url: "/user/shop/category",
-                },
-                {
-                    title: "Manage Brands",
-                    url: "/user/shop/brand",
-                },
-                {
-                    title: "Manage Coupon",
-                    url: "/user/shop/manage-coupon",
-                },
-            ],
-        },
-
-        {
-            title: "Settings",
-            url: "#",
-            icon: Settings,
-            items: [
-                {
-                    title: "Profile",
-                    url: "/profile",
-                },
-            ],
-        },
-    ],
-    navSecondary: [
-        {
-            title: "Support",
-            url: "#",
-            icon: LifeBuoy,
-        },
-        {
-            title: "Feedback",
-            url: "#",
-            icon: Send,
-        },
-    ],
-    projects: [
-        {
-            name: "Design Engineering",
-            url: "#",
-            icon: Frame,
-        },
-        {
-            name: "Sales & Marketing",
-            url: "#",
-            icon: PieChart,
-        },
-        {
-            name: "Travel",
-            url: "#",
-            icon: Map,
-        },
-    ],
-};
+import Logo from "@/assets/Logo";
+import { useUser } from "@/context/UserContext";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const { user, setIsLoading } = useUser();
+
+    const landlordMenu = [
+        {
+            title: "Add Rental House",
+            url: "/landlord/add-rental-house",
+            icon: PlusCircle,
+        },
+        {
+            title: "Manage Rental Houses",
+            url: "/landlord/manage-rental-houses",
+            icon: SquareChartGantt,
+        },
+    ];
+
+    const tenantMenu = [
+        {
+            title: "Rental House Requests",
+            url: "/tenant/rental-house-request",
+            icon: ClipboardList,
+        },
+    ];
+
+    const adminMenu = [
+        {
+            title: "Manage Users",
+            url: "/admin/manage-users",
+            icon: UsersRoundIcon,
+        },
+        {
+            title: "Manage Rental Houses",
+            url: "/admin/manage-rental-houses",
+            icon: SquareChartGantt,
+        },
+    ];
+
+    const data = {
+        navMain: [
+            {
+                title: "Home",
+                url: "/",
+                icon: HomeIcon,
+            },
+            {
+                title: "Dashboard",
+                url: `/${user?.role}`,
+                icon: LayoutDashboard,
+                isActive: true,
+            },
+            {
+                title: "Profile",
+                url: "/profile",
+                icon: UserCog,
+            },
+        ],
+    };
+
+    if (user?.role === "landlord") {
+        data.navMain.push(...landlordMenu);
+    } else if (user?.role === "tenant") {
+        data.navMain.push(...tenantMenu);
+    } else if (user?.role === "admin") {
+        data.navMain.push(...adminMenu);
+    }
+
     return (
         <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
@@ -100,9 +108,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href="/">
-                                <div className="flex items-center justify-center">Rentify</div>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
-                                    <h2 className="font-bold text-xl">NextMart</h2>
+                                    <Logo />
                                 </div>
                             </Link>
                         </SidebarMenuButton>

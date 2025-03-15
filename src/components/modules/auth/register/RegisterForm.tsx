@@ -56,7 +56,9 @@ export default function RegisterForm() {
     return (
         <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-md w-full p-5">
             <div className="flex items-center space-x-4 ">
-                <Logo />
+                <Link href={"/"}>
+                    <Logo />
+                </Link>
                 <div>
                     <h1 className="text-xl font-semibold">Register</h1>
                     <p className="font-extralight text-sm text-gray-600">

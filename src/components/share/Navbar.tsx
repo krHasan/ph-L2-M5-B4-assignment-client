@@ -1,5 +1,5 @@
 "use client";
-import Logo from "@/assets/logo-100.png";
+import Logo from "@/assets/Logo";
 import { Button } from "../ui/button";
 import { Heart, LogOut, ShoppingCart } from "lucide-react";
 import Link from "next/link";
@@ -20,14 +20,14 @@ import { protectedRoutes } from "@/constants";
 // import { orderedProductsSelector } from "@/redux/features/cartSlice";
 
 export default function Navbar() {
-    // const { user, setIsLoading } = useUser();
+    const { user, setIsLoading } = useUser();
     const pathname = usePathname();
     const router = useRouter();
     // const products = useAppSelector(orderedProductsSelector);
 
     const handleLogOut = () => {
         logout();
-        // setIsLoading(true);
+        setIsLoading(true);
         if (protectedRoutes.some((route) => pathname.match(route))) {
             router.push("/");
         }
@@ -37,37 +37,45 @@ export default function Navbar() {
         <header className="border-b bg-background w-full sticky top-0 z-10">
             <div className="container flex justify-between items-center mx-auto h-16 px-5">
                 <Link href="/">
-                    <h1 className="text-2xl font-black flex items-center">Rentify</h1>
+                    <h1 className="text-2xl font-black flex items-center">
+                        <Logo />
+                    </h1>
                 </Link>
-                <div className="max-w-md  flex-grow">
-                    <input
+                <div className="max-w-md space-x-4">
+                    {/* <input
                         type="text"
                         placeholder="Search for products"
                         className="w-full max-w-6xl border border-gray-300 rounded-full py-2 px-5"
-                    />
+                    /> */}
+                    <Link href="/" className="hover:text-app-base">
+                        Home
+                    </Link>
+                    <Link href="/rental-houses" className="hover:text-app-base">
+                        Rental Houses
+                    </Link>
+                    <Link href="/about-us" className="hover:text-app-base">
+                        About Us
+                    </Link>
                 </div>
                 <nav className="flex gap-2">
-                    <Button variant="outline" className="rounded-full p-0 size-10">
-                        <Heart />
-                    </Button>
-                    <Link href="/cart" passHref>
+                    {/* <Link href="/cart" passHref>
                         <Button
                             variant="outline"
                             className="rounded-full size-10 flex items-center justify-center gap-1"
                         >
                             <ShoppingCart className="w-5 h-5" />
-                            {/* <span className="text-red-500 font-bold">{products?.length ?? 0}</span> */}
+                            <span className="text-red-500 font-bold">{products?.length ?? 0}</span>
                         </Button>
-                    </Link>
-                    {/* 
+                    </Link> */}
+
                     {user?.email ? (
                         <>
-                            <Link href="/create-shop">
-                                <Button className="rounded-full">Create Shop</Button>
+                            <Link href={`/${user?.role}`}>
+                                <Button className="rounded-full cursor-pointer">Dashboard</Button>
                             </Link>
 
                             <DropdownMenu>
-                                <DropdownMenuTrigger>
+                                <DropdownMenuTrigger className="cursor-pointer">
                                     <Avatar>
                                         <AvatarImage src="https://github.com/shadcn.png" />
                                         <AvatarFallback>User</AvatarFallback>
@@ -76,11 +84,9 @@ export default function Navbar() {
                                 <DropdownMenuContent>
                                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem>Profile</DropdownMenuItem>
                                     <DropdownMenuItem>
-                                        <Link href={`/${user?.role}/dashboard`}>Dashboard</Link>
+                                        <Link href={`/profile`}>My Profile</Link>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem>My Shop</DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem
                                         className="bg-red-500 cursor-pointer"
@@ -94,11 +100,11 @@ export default function Navbar() {
                         </>
                     ) : (
                         <Link href="/login">
-                            <Button className="rounded-full" variant="outline">
+                            <Button className="rounded-full cursor-pointer" variant="outline">
                                 Login
                             </Button>
                         </Link>
-                    )} */}
+                    )}
                 </nav>
             </div>
         </header>
