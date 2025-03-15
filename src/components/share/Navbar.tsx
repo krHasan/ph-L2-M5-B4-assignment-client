@@ -82,14 +82,18 @@ export default function Navbar() {
                                     </Avatar>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
-                                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                    <DropdownMenuLabel>
+                                        {user.name} ({user.role.toUpperCase()})
+                                        <DropdownMenuSeparator />
+                                        {user.email}
+                                    </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem>
                                         <Link href={`/profile`}>My Profile</Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem
-                                        className="bg-red-500 cursor-pointer"
+                                        className="bg-red-500 cursor-pointer text-white"
                                         onClick={handleLogOut}
                                     >
                                         <LogOut />

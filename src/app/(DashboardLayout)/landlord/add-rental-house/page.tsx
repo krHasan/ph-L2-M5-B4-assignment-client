@@ -1,7 +1,9 @@
+import AddRentalHouseForm from "@/components/modules/landlord/add-rental-house/AddRentalHouseForm";
+
 const AddRentalHousePage = () => {
     return (
-        <div>
-            <h1>This is AddRentalHousePage component</h1>
+        <div className="flex items-center justify-center">
+            <AddRentalHouseForm />
         </div>
     );
 };

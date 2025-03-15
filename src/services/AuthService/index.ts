@@ -77,6 +77,7 @@ export const reCaptchaTokenVerification = async (token: string) => {
 
 export const logout = async () => {
     (await cookies()).delete("accessToken");
+    (await cookies()).delete("refreshToken");
 };
 
 export const getNewToken = async () => {
@@ -89,6 +90,7 @@ export const getNewToken = async () => {
             },
         });
 
+        console.log(res.json());
         return res.json();
     } catch (error: any) {
         return Error(error);
