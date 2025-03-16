@@ -2,8 +2,8 @@
 import { getValidToken } from "@/lib/verifyToken";
 import { revalidateTag } from "next/cache";
 
-// get all products
-export const getAllProducts = async (
+// get all listings
+export const getAllListings = async (
     page?: string,
     limit?: string,
     query?: { [key: string]: string | string[] | undefined }
@@ -11,23 +11,20 @@ export const getAllProducts = async (
     const params = new URLSearchParams();
 
     if (query?.price) {
-        params.append("minPrice", "0");
-        params.append("maxPrice", query?.price.toString());
+        params.append("minAmount", "0");
+        params.append("maxAmount", query?.rentAmount ? query?.rentAmount.toString() : "100000");
     }
 
-    if (query?.category) {
-        params.append("categories", query?.category.toString());
+    if (query?.rentArea) {
+        params.append("rentArea", query?.rentArea ? query?.rentArea.toString() : "");
     }
-    if (query?.brand) {
-        params.append("brands", query?.brand.toString());
-    }
-    if (query?.rating) {
-        params.append("ratings", query?.rating.toString());
+    if (query?.rentType) {
+        params.append("rentType", query?.rentType ? query?.rentType.toString() : "");
     }
 
     try {
         const res = await fetch(
-            `${process.env.NEXT_PUBLIC_BASE_API}/product?limit=${limit}&page=${page}&${params}`,
+            `${process.env.NEXT_PUBLIC_BASE_API}/listings?limit=${limit}&page=${page}&${params}`,
             {
                 next: {
                     tags: ["PRODUCT"],
@@ -41,10 +38,10 @@ export const getAllProducts = async (
     }
 };
 
-// get single product
-export const getSingleProduct = async (productId: string) => {
+// get single listing
+export const getSingleListing = async (listingId: string) => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/listings/${listingId}`, {
             next: {
                 tags: ["PRODUCT"],
             },
@@ -56,7 +53,7 @@ export const getSingleProduct = async (productId: string) => {
     }
 };
 
-// add product
+// add listing
 export const addListing = async (listingData: FormData): Promise<any> => {
     const token = await getValidToken();
     try {
@@ -74,13 +71,13 @@ export const addListing = async (listingData: FormData): Promise<any> => {
     }
 };
 
-// update product
-export const updateProduct = async (productData: FormData, productId: string): Promise<any> => {
+// update listing
+export const updateListing = async (listingData: FormData, listingId: string): Promise<any> => {
     const token = await getValidToken();
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/listings/${listingId}`, {
             method: "PATCH",
-            body: productData,
+            body: listingData,
             headers: {
                 Authorization: token,
             },

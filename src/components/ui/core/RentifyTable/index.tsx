@@ -16,7 +16,7 @@ interface RentifyTableProps<TData, TValue> {
     data: TData[];
 }
 
-export function NMTable<TData, TValue>({ columns, data }: RentifyTableProps<TData, TValue>) {
+export function RentifyTable<TData, TValue>({ columns, data }: RentifyTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
         columns,

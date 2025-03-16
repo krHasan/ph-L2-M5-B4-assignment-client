@@ -1,4 +1,4 @@
-import AddRentalHouseForm from "@/components/modules/landlord/add-rental-house/AddRentalHouseForm";
+import AddRentalHouseForm from "@/components/modules/landlord/rental-house/AddRentalHouseForm";
 
 const AddRentalHousePage = () => {
     return (

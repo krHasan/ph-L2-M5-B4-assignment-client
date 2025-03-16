@@ -33,6 +33,10 @@ export default function Navbar() {
         }
     };
 
+    if (user?.role && !["admin", "landlord", "tenant"].includes(user?.role)) {
+        handleLogOut();
+    }
+
     return (
         <header className="border-b bg-background w-full sticky top-0 z-10">
             <div className="container flex justify-between items-center mx-auto h-16 px-5">

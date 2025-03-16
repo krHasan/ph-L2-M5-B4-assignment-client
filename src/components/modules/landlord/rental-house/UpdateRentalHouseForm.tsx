@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { FieldValues, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RentifyImageUploader from "@/components/ui/core/RentifyImageUploader";
 import ImagePreviewer from "@/components/ui/core/RentifyImageUploader/ImagePreviewer";
 import { Plus } from "lucide-react";
@@ -27,12 +27,13 @@ import {
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { addListing } from "@/services/Listing";
+import { IListing } from "@/types";
 import { useUser } from "@/context/UserContext";
+import { updateListing } from "@/services/Listing";
 
-export default function AddRentalHouseForm() {
+export default function UpdateListingForm({ listing }: { listing: IListing }) {
     const [imageFiles, setImageFiles] = useState<File[] | []>([]);
-    const [imagePreview, setImagePreview] = useState<string[] | []>([]);
+    const [imagePreview, setImagePreview] = useState<string[] | []>(listing?.imageUrls || []);
     const { user } = useUser();
 
     const rentType = [
@@ -55,13 +56,15 @@ export default function AddRentalHouseForm() {
 
     const form = useForm({
         defaultValues: {
-            rentArea: "",
-            location: "",
-            description: "",
-            rentType: "",
-            rentAmount: "",
-            numberOfBedrooms: "",
-            amenities: [{ value: "" }],
+            rentArea: listing?.rentArea || "",
+            location: listing?.location || "",
+            description: listing?.description || "",
+            rentType: listing?.rentType || "",
+            rentAmount: listing?.rentAmount || "",
+            numberOfBedrooms: listing?.numberOfBedrooms || "",
+            amenities: listing?.amenities?.map((amenity) => ({
+                value: amenity,
+            })) || [{ value: "" }],
         },
     });
 
@@ -101,18 +104,16 @@ export default function AddRentalHouseForm() {
             formData.append("images", file);
         }
         try {
-            const res = await addListing(formData);
+            const res = await updateListing(formData, listing?._id);
 
             if (res.success) {
                 toast.success(res.message);
                 router.push("/landlord/manage-rental-houses");
             } else {
                 toast.error(res.message);
-                console.log(res);
             }
         } catch (err: any) {
             console.error(err);
-            console.log(err);
         }
     };
 
@@ -121,13 +122,128 @@ export default function AddRentalHouseForm() {
             <div className="flex items-center space-x-4 mb-5 ">
                 <Logo />
 
-                <h1 className="text-xl font-bold">Add A Rental House</h1>
+                <h1 className="text-xl font-bold">Update Rent House Info</h1>
             </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <div className="flex justify-between items-center border-t border-b py-3 my-5">
                         <p className="text-primary font-bold text-xl">Basic Information</p>
                     </div>
+                    {/* <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Product Name</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} value={field.value || ""} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="price"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Price</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} value={field.value || ""} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="category"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Category</FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select Product Category" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {categories.map((category) => (
+                                                <SelectItem
+                                                    key={category?._id}
+                                                    value={category?._id}
+                                                >
+                                                    {category?.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="brand"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Brand</FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select Product Brand" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {brands.map((brand) => (
+                                                <SelectItem key={brand?._id} value={brand?._id}>
+                                                    {brand?.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="stock"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Stock</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} value={field.value || ""} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="weight"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Weight</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} value={field.value || ""} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div> */}
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <FormField
                             control={form.control}
@@ -216,6 +332,25 @@ export default function AddRentalHouseForm() {
                         />
                     </div>
 
+                    {/* <div className="my-5">
+                        <FormField
+                            control={form.control}
+                            name="description"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Description</FormLabel>
+                                    <FormControl>
+                                        <Textarea
+                                            className="h-36 resize-none"
+                                            {...field}
+                                            value={field.value || ""}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div> */}
                     <div className="my-5 space-y-4">
                         <FormField
                             control={form.control}
@@ -305,7 +440,7 @@ export default function AddRentalHouseForm() {
                     </div>
 
                     <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
-                        {isSubmitting ? "Adding Rent House....." : "Add Rent House"}
+                        {isSubmitting ? "Adding Rental House....." : "Add Rental House"}
                     </Button>
                 </form>
             </Form>
