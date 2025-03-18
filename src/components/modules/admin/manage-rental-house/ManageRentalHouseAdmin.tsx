@@ -2,77 +2,40 @@
 
 import { RentifyTable } from "@/components/ui/core/RentifyTable/index";
 import { ColumnDef } from "@tanstack/react-table";
-import { Check, Edit, Eye, Plus, SquareX, Trash } from "lucide-react";
+import { Edit, Eye, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import TablePagination from "@/components/ui/core/RentifyTable/TablePagination";
 import { IListing, IMeta } from "@/types";
-import Swal from "sweetalert2";
-import { deleteListing, updateListingStatus } from "@/services/Listing";
-import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
 
-const ManageRentalHouse = ({ listings, meta }: { listings: IListing[]; meta: IMeta }) => {
+const ManageRentalHouseAdmin = ({ listings, meta }: { listings: IListing[]; meta: IMeta }) => {
     const router = useRouter();
 
     const handleView = (listing: IListing) => {
         console.log("Viewing product:", listing);
     };
 
-    const handleStatus = async (listingId: string) => {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You are going to change the status",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#333",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Yes, Change Status!",
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const res = await updateListingStatus(listingId);
-
-                    if (res.success) {
-                        toast.success(res.message);
-                    } else {
-                        toast.error(res.message);
-                    }
-                } catch (err: any) {
-                    console.error(err);
-                }
-            }
-        });
-    };
-
-    const handleDelete = async (listingId: string) => {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Yes, delete it!",
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const res = await deleteListing(listingId);
-
-                    if (res.success) {
-                        toast.success(res.message);
-                    } else {
-                        toast.error(res.message);
-                    }
-                } catch (err: any) {
-                    console.error(err);
-                }
-            }
-        });
+    const handleDelete = (listingId: string) => {
+        console.log("Deleting product with ID:", listingId);
     };
 
     const columns: ColumnDef<IListing>[] = [
+        {
+            accessorKey: "landlordId.name",
+            header: "Landlord Name",
+            cell: ({ row }) => <span>{row.original.landlordId.name}</span>,
+        },
+        {
+            accessorKey: "landlordId.email",
+            header: "Email",
+            cell: ({ row }) => <span>{row.original.landlordId.email}</span>,
+        },
+        {
+            accessorKey: "landlordId.phoneNumber",
+            header: "Phone Number",
+            cell: ({ row }) => <span>{row.original.landlordId.phoneNumber}</span>,
+        },
         {
             accessorKey: "rentArea",
             header: "Rent Area",
@@ -110,21 +73,6 @@ const ManageRentalHouse = ({ listings, meta }: { listings: IListing[]; meta: IMe
             cell: ({ row }) => <span>{row.original.numberOfBedrooms}</span>,
         },
         {
-            accessorKey: "isActive",
-            header: () => <div>Status</div>,
-            cell: ({ row }) => (
-                <div>
-                    {row.original.isActive ? (
-                        <Badge variant="secondary" className="bg-green-500">
-                            Active
-                        </Badge>
-                    ) : (
-                        <Badge variant="destructive">Inactive</Badge>
-                    )}
-                </div>
-            ),
-        },
-        {
             accessorKey: "action",
             header: "Action",
             cell: ({ row }) => (
@@ -148,30 +96,12 @@ const ManageRentalHouse = ({ listings, meta }: { listings: IListing[]; meta: IMe
                     </button>
 
                     <button
-                        className="text-red-500 cursor-pointer"
+                        className="text-gray-500 hover:text-red-500"
                         title="Delete"
                         onClick={() => handleDelete(row.original._id)}
                     >
                         <Trash className="w-5 h-5" />
                     </button>
-
-                    {row.original.isActive ? (
-                        <button
-                            className="text-red-500 cursor-pointer"
-                            title="Make Inactive"
-                            onClick={() => handleStatus(row.original._id)}
-                        >
-                            <SquareX className="w-5 h-5" />
-                        </button>
-                    ) : (
-                        <button
-                            className="bg-green-500 cursor-pointer"
-                            title="Make Active"
-                            onClick={() => handleStatus(row.original._id)}
-                        >
-                            <Check className="w-5 h-5" />
-                        </button>
-                    )}
                 </div>
             ),
         },
@@ -197,4 +127,4 @@ const ManageRentalHouse = ({ listings, meta }: { listings: IListing[]; meta: IMe
     );
 };
 
-export default ManageRentalHouse;
+export default ManageRentalHouseAdmin;

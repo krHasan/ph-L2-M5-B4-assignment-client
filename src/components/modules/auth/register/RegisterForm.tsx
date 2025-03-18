@@ -38,7 +38,6 @@ export default function RegisterForm() {
     const { setIsLoading } = useUser();
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-        console.log(data);
         try {
             const res = await registerUser(data);
             setIsLoading(true);

@@ -1,5 +1,5 @@
 import ManageRentalHouse from "@/components/modules/landlord/manage-rental-house/ManageRentalHouse";
-import { getAllListings } from "@/services/Listing";
+import { getMyListings } from "@/services/Listing";
 
 const ManageRentalHousesPage = async ({
     searchParams,
@@ -7,7 +7,12 @@ const ManageRentalHousesPage = async ({
     searchParams: Promise<{ page: string }>;
 }) => {
     const { page } = await searchParams;
-    const { data, meta } = await getAllListings(page, "10");
+    const res = await getMyListings(page, "10");
+    if (!res.success) {
+        console.log(res.message);
+        return false;
+    }
+    const { data, meta } = res;
     return (
         <div>
             <ManageRentalHouse listings={data} meta={meta} />

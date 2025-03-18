@@ -1,16 +1,12 @@
-import Logo from "@/assets/logo-100.png";
+import Logo from "@/assets/Logo";
 import { Facebook, Instagram, X } from "lucide-react";
 import Link from "next/link";
 
 const Footer = () => {
     const navLinks = [
         { href: "/", label: "Home" },
-        { href: "/shop", label: "Shop" },
-        { href: "/products", label: "App Products" },
-        { href: "/about", label: "About Us" },
-        { href: "/testimonial", label: "Testimonial" },
-        { href: "/blogs", label: "Blogs" },
-        { href: "/contact", label: "Contact Us" },
+        { href: "/about-us", label: "About Us" },
+        { href: "/rental-houses", label: "Rental Houses" },
     ];
 
     const socialLinks = [
@@ -23,11 +19,12 @@ const Footer = () => {
             <div className="max-w-6xl mx-auto px-4 text-center">
                 <div className="flex flex-col items-center mb-6">
                     <div className="flex items-center space-x-2">
-                        <h1 className="text-2xl font-black flex items-center">Rentify</h1>
+                        <h1 className="text-2xl font-black flex items-center">
+                            <Logo />
+                        </h1>
                     </div>
                     <p className="text-gray-600 mt-3 w-1/2 text-xs leading-6">
-                        Save big this Black Friday with unbeatable deals on tech, home essentials,
-                        fashion, and more! Limited stock.
+                        Our Smart Rental Housing Solution
                     </p>
                 </div>
 

@@ -108,11 +108,9 @@ export default function AddRentalHouseForm() {
                 router.push("/landlord/manage-rental-houses");
             } else {
                 toast.error(res.message);
-                console.log(res);
             }
         } catch (err: any) {
             console.error(err);
-            console.log(err);
         }
     };
 

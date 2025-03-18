@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { FieldValues, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import RentifyImageUploader from "@/components/ui/core/RentifyImageUploader";
 import ImagePreviewer from "@/components/ui/core/RentifyImageUploader/ImagePreviewer";
 import { Plus } from "lucide-react";

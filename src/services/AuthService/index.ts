@@ -90,7 +90,6 @@ export const getNewToken = async () => {
             },
         });
 
-        console.log(res.json());
         return res.json();
     } catch (error: any) {
         return Error(error);
