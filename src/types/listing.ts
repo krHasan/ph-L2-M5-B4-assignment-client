@@ -29,3 +29,17 @@ export interface IAppUser {
     updatedAt: string;
     __v: number;
 }
+export interface IRequest {
+    _id: string;
+    landlordId: IAppUser;
+    landlordPhoneNumber: string;
+    listingId: IListing;
+    moveInDate: Date;
+    paymentStatus: string;
+    specialRequirements: string;
+    status: string;
+    tenantId: IAppUser;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}

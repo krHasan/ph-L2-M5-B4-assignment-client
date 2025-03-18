@@ -10,14 +10,50 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useUser } from "@/context/UserContext";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import Swal from "sweetalert2";
+import { createRequest } from "@/services/Request";
+import { useRouter } from "next/navigation";
 
 const BookingCard = ({ listing }: { listing: IListing }) => {
     const [date, setDate] = useState<Date>();
     const [note, setNote] = useState("");
     const { user } = useUser();
+    const router = useRouter();
 
     const handleBooking = () => {
-        console.log(note, date);
+        if (!date) {
+            toast.error("Please select a date first");
+        }
+        const saveData = {
+            listingId: listing._id,
+            moveInDate: date,
+            specialRequirements: note,
+        };
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You are going to create a request",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#333",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await createRequest(saveData);
+
+                    if (res.success) {
+                        router.push("/tenant/rental-house-request");
+                        toast.success(res.message);
+                    } else {
+                        toast.error(res.message);
+                    }
+                } catch (err: any) {
+                    console.error(err);
+                }
+            }
+        });
     };
 
     return (
@@ -72,7 +108,7 @@ const BookingCard = ({ listing }: { listing: IListing }) => {
                 {user?.role === "tenant" ? (
                     <button
                         onClick={handleBooking}
-                        className="gap-2.5 self-center px-10 py-3 text-lg font-bold leading-none text-white bg-teal-900 rounded-[40px] max-md:px-5"
+                        className="gap-2.5 self-center px-10 py-3 text-lg font-bold leading-none text-white bg-teal-900 rounded-[40px] max-md:px-5 cursor-pointer"
                     >
                         Request For Rent
                     </button>

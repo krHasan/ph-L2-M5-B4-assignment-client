@@ -66,7 +66,7 @@ const PropertyInfo = ({ listing }: { listing: IListing }) => {
                                 <h2 className="text-4xl font-bold leading-none max-md:max-w-full">
                                     Amenities
                                 </h2>
-                                <p className="mt-3 text-base leading-5 max-md:max-w-full">
+                                <div className="mt-3 text-base leading-5 max-md:max-w-full">
                                     {listing?.amenities.map((item, index) => (
                                         <div key={index}>
                                             <div className="flex gap-2 mt-4 w-full">
@@ -75,7 +75,7 @@ const PropertyInfo = ({ listing }: { listing: IListing }) => {
                                             </div>
                                         </div>
                                     ))}
-                                </p>
+                                </div>
                             </section>
                         </div>
                     </article>
