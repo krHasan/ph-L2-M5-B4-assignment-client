@@ -21,7 +21,26 @@ const PropertyInfo = ({ listing }: { listing: IListing }) => {
                             <div className="flex flex-wrap gap-10 items-start py-2.5 mt-8 text-base leading-none max-md:max-w-full">
                                 <div className="flex gap-5 items-start">
                                     <div className="flex gap-2 items-start">
-                                        <Badge className="text-md">{listing.rentType}</Badge>
+                                        {listing.rentType === "family" && (
+                                            <Badge className="text-md" variant={"default"}>
+                                                {listing?.rentType}
+                                            </Badge>
+                                        )}
+                                        {listing.rentType === "bachelor" && (
+                                            <Badge className="text-md" variant={"destructive"}>
+                                                {listing?.rentType}
+                                            </Badge>
+                                        )}
+                                        {listing.rentType === "office" && (
+                                            <Badge className="text-md" variant={"outline"}>
+                                                {listing?.rentType}
+                                            </Badge>
+                                        )}
+                                        {listing.rentType === "sublet" && (
+                                            <Badge className="text-md" variant={"secondary"}>
+                                                {listing?.rentType}
+                                            </Badge>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="flex gap-5 items-start">
@@ -49,12 +68,12 @@ const PropertyInfo = ({ listing }: { listing: IListing }) => {
                                 </h2>
                                 <p className="mt-3 text-base leading-5 max-md:max-w-full">
                                     {listing?.amenities.map((item, index) => (
-                                        <p key={index}>
+                                        <div key={index}>
                                             <div className="flex gap-2 mt-4 w-full">
                                                 <CheckSquare />
                                                 <div className="self-stretch my-auto">{item}</div>
                                             </div>
-                                        </p>
+                                        </div>
                                     ))}
                                 </p>
                             </section>

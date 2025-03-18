@@ -16,10 +16,6 @@ import { Badge } from "@/components/ui/badge";
 const ManageRentalHouse = ({ listings, meta }: { listings: IListing[]; meta: IMeta }) => {
     const router = useRouter();
 
-    const handleView = (listing: IListing) => {
-        console.log("Viewing product:", listing);
-    };
-
     const handleStatus = async (listingId: string) => {
         Swal.fire({
             title: "Are you sure?",
@@ -130,15 +126,15 @@ const ManageRentalHouse = ({ listings, meta }: { listings: IListing[]; meta: IMe
             cell: ({ row }) => (
                 <div className="flex items-center space-x-3">
                     <button
-                        className="text-gray-500 hover:text-blue-500"
+                        className="text-gray-500 hover:text-blue-500 cursor-pointer"
                         title="View"
-                        onClick={() => handleView(row.original)}
+                        onClick={() => router.push(`/rental-houses/${row.original._id}`)}
                     >
                         <Eye className="w-5 h-5" />
                     </button>
 
                     <button
-                        className="text-gray-500 hover:text-green-500"
+                        className="text-gray-500 hover:text-green-500 cursor-pointer"
                         title="Edit"
                         onClick={() =>
                             router.push(`/landlord/update-rental-house/${row.original._id}`)

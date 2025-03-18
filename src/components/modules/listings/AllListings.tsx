@@ -9,7 +9,7 @@ const AllListings = ({ listings }: { listings: IListing[] }) => {
                 <FilterSidebar />
             </div>
             <div className="w-9/12">
-                <div className="grid grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {listings?.map((listing: IListing, idx: number) => (
                         <ListingCard key={idx} listing={listing} />
                     ))}

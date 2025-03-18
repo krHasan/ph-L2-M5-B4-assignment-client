@@ -2,22 +2,44 @@
 
 import { RentifyTable } from "@/components/ui/core/RentifyTable/index";
 import { ColumnDef } from "@tanstack/react-table";
-import { Edit, Eye, Plus, Trash } from "lucide-react";
+import { Check, Edit, Eye, Plus, SquareX, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import TablePagination from "@/components/ui/core/RentifyTable/TablePagination";
 import { IListing, IMeta } from "@/types";
+import Swal from "sweetalert2";
+import { updateListingStatus } from "@/services/Listing";
+import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 
 const ManageRentalHouseAdmin = ({ listings, meta }: { listings: IListing[]; meta: IMeta }) => {
     const router = useRouter();
 
-    const handleView = (listing: IListing) => {
-        console.log("Viewing product:", listing);
-    };
+    const handleStatus = async (listingId: string) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You are going to change the status",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#333",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, Change Status!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await updateListingStatus(listingId);
 
-    const handleDelete = (listingId: string) => {
-        console.log("Deleting product with ID:", listingId);
+                    if (res.success) {
+                        toast.success(res.message);
+                    } else {
+                        toast.error(res.message);
+                    }
+                } catch (err: any) {
+                    console.error(err);
+                }
+            }
+        });
     };
 
     const columns: ColumnDef<IListing>[] = [
@@ -73,35 +95,50 @@ const ManageRentalHouseAdmin = ({ listings, meta }: { listings: IListing[]; meta
             cell: ({ row }) => <span>{row.original.numberOfBedrooms}</span>,
         },
         {
+            accessorKey: "isActive",
+            header: () => <div>Status</div>,
+            cell: ({ row }) => (
+                <div>
+                    {row.original.isActive ? (
+                        <Badge variant="secondary" className="bg-green-500">
+                            Active
+                        </Badge>
+                    ) : (
+                        <Badge variant="destructive">Inactive</Badge>
+                    )}
+                </div>
+            ),
+        },
+        {
             accessorKey: "action",
             header: "Action",
             cell: ({ row }) => (
                 <div className="flex items-center space-x-3">
                     <button
-                        className="text-gray-500 hover:text-blue-500"
+                        className="text-gray-500 hover:text-blue-500 cursor-pointer"
                         title="View"
-                        onClick={() => handleView(row.original)}
+                        onClick={() => router.push(`/rental-houses/${row.original._id}`)}
                     >
                         <Eye className="w-5 h-5" />
                     </button>
 
-                    <button
-                        className="text-gray-500 hover:text-green-500"
-                        title="Edit"
-                        onClick={() =>
-                            router.push(`/landlord/update-rental-house/${row.original._id}`)
-                        }
-                    >
-                        <Edit className="w-5 h-5" />
-                    </button>
-
-                    <button
-                        className="text-gray-500 hover:text-red-500"
-                        title="Delete"
-                        onClick={() => handleDelete(row.original._id)}
-                    >
-                        <Trash className="w-5 h-5" />
-                    </button>
+                    {row.original.isActive ? (
+                        <button
+                            className="text-red-500 cursor-pointer"
+                            title="Make Inactive"
+                            onClick={() => handleStatus(row.original._id)}
+                        >
+                            <SquareX className="w-5 h-5" />
+                        </button>
+                    ) : (
+                        <button
+                            className="bg-green-500 cursor-pointer"
+                            title="Make Active"
+                            onClick={() => handleStatus(row.original._id)}
+                        >
+                            <Check className="w-5 h-5" />
+                        </button>
+                    )}
                 </div>
             ),
         },

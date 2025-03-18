@@ -9,10 +9,12 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Building, Building2, House, HousePlusIcon, Search } from "lucide-react";
+import Link from "next/link";
 import * as React from "react";
 
 export const Hero: React.FC = () => {
     const [activeTab, setActiveTab] = React.useState<"family" | "bachelor" | "office">("family");
+    const [rentArea, setRentArea] = React.useState("Mirpur");
 
     return (
         <section>
@@ -68,7 +70,7 @@ export const Hero: React.FC = () => {
                                                     Bachelor
                                                 </button>
                                             </div>
-                                            <Select>
+                                            <Select onValueChange={(value) => setRentArea(value)}>
                                                 <SelectTrigger className="px-5 py-4 mt-3 w-full min-h-[54px] bg-white rounded-xl border border-solid border-[color:var(--Input,#E5E5EA)] text-neutral-700">
                                                     <SelectValue placeholder="Rent Area" />
                                                 </SelectTrigger>
@@ -89,13 +91,14 @@ export const Hero: React.FC = () => {
                                             </Select>
 
                                             <div className="flex gap-3 items-start mt-3 w-full text-base font-bold text-center">
-                                                <button
+                                                <Link
                                                     type="button"
+                                                    href={`/rental-houses?rentType=${activeTab}&rentArea=${rentArea}`}
                                                     className="flex flex-1 shrink gap-2.5 justify-center items-center px-5 py-4 cursor-pointer text-white bg-red-700 hover:bg-red-500 rounded-xl basis-0 min-h-[54px]"
                                                 >
                                                     <span>Search Now</span>
                                                     <Search />
-                                                </button>
+                                                </Link>
                                             </div>
 
                                             <div className="flex justify-between gap-5 items-start mt-6 text-sm font-semibold whitespace-nowrap">

@@ -1,6 +1,8 @@
 "use server";
 
+import { getValidToken } from "@/lib/verifyToken";
 import { jwtDecode } from "jwt-decode";
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
@@ -16,6 +18,45 @@ export const registerUser = async (userData: FieldValues) => {
         const result = await res.json();
 
         return result;
+    } catch (error: any) {
+        return Error(error);
+    }
+};
+
+export const getAllUsers = async (page?: string, limit?: string) => {
+    try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_API}/user?limit=${limit}&page=${page}`,
+            {
+                headers: {
+                    Authorization: (await cookies()).get("accessToken")!.value,
+                },
+                next: {
+                    tags: ["USERS"],
+                },
+            }
+        );
+        const data = await res.json();
+        return data;
+    } catch (error: any) {
+        return Error(error.message);
+    }
+};
+
+export const updateUserStatus = async (userId: string): Promise<any> => {
+    const token = await getValidToken();
+    try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_API}/user/change-status/${userId}`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: token,
+                },
+            }
+        );
+        revalidateTag("USERS");
+        return res.json();
     } catch (error: any) {
         return Error(error);
     }

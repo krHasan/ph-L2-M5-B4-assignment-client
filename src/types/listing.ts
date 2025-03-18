@@ -1,6 +1,6 @@
 export interface IListing {
     _id: string;
-    landlordId: ILandlord;
+    landlordId: IAppUser;
     location: string;
     description: string;
     rentType: string;
@@ -16,7 +16,7 @@ export interface IListing {
     status: string;
 }
 
-export interface ILandlord {
+export interface IAppUser {
     _id: string;
     name: string;
     email: string;
