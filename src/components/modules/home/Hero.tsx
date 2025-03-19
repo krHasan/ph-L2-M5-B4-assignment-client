@@ -24,11 +24,11 @@ export const Hero: React.FC = () => {
                         <div className="ml-10 w-7/12 flex max-md:ml-0 max-md:w-full">
                             <div className="relative self-stretch my-auto text-white max-md:mt-10 max-md:max-w-full">
                                 <h1 className="text-6xl font-bold leading-[66px] max-md:max-w-full max-md:text-4xl max-md:leading-[53px]">
-                                    Find Your Perfect Property with Us
+                                    Find A Perfect House For Rent With Us
                                 </h1>
                                 <p className="mt-2.5 mr-5 text-2xl font-semibold leading-6 max-md:mr-2.5 max-md:max-w-full text-yellow-500">
-                                    Discover Your Dream Property with Us - Where Perfect Meets
-                                    Possible in Every Home.
+                                    Discover Your Dream House With Us - Where Perfect Meets Possible
+                                    in Every Home.
                                 </p>
                             </div>
                         </div>

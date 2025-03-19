@@ -14,12 +14,12 @@ const FeaturedListings = async () => {
                     <h2 className="text-3xl font-bold">Featured Rental Houses</h2>
                     <Link href="/rental-houses" className="cursor-pointer">
                         <Button variant="outline" className="rounded-full">
-                            All Collection
+                            See More
                         </Button>
                     </Link>
                 </div>
-                <div className="grid grid-cols-3 gap-4 mt-10">
-                    {listings?.slice(0, 3).map((listing: IListing, idx: number) => (
+                <div className="grid grid-cols-4 gap-4 mt-10">
+                    {listings?.slice(0, 4).map((listing: IListing, idx: number) => (
                         <ListingCard key={idx} listing={listing} />
                     ))}
                 </div>
