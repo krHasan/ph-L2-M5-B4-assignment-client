@@ -64,3 +64,27 @@ export const cancelRequest = async (requestId: string): Promise<any> => {
         return Error(error);
     }
 };
+
+export const updateRequestStatus = async (
+    requestId: string,
+    statusData: Record<string, unknown>
+): Promise<any> => {
+    const token = await getValidToken();
+    try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_API}/requests/change-request-status/${requestId}`,
+            {
+                method: "PATCH",
+                body: JSON.stringify(statusData),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: token,
+                },
+            }
+        );
+        revalidateTag("REQUESTS");
+        return res.json();
+    } catch (error: any) {
+        return Error(error);
+    }
+};

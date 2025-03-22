@@ -2,24 +2,21 @@
 
 import { RentifyTable } from "@/components/ui/core/RentifyTable/index";
 import { ColumnDef } from "@tanstack/react-table";
-import { Check, Edit, Eye, Plus, SquareX, Trash } from "lucide-react";
-import Image from "next/image";
+import { Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import TablePagination from "@/components/ui/core/RentifyTable/TablePagination";
-import { IListing, IMeta, IRequest } from "@/types";
+import { IMeta, IRequest } from "@/types";
 import Swal from "sweetalert2";
-import { deleteListing, updateListingStatus } from "@/services/Listing";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
-import { cancelRequest } from "@/services/Request";
-import { createPayment } from "@/services/Payment";
+import { updateRequestStatus } from "@/services/Request";
 
-const RentalHouseRequest = ({ requests, meta }: { requests: IRequest[]; meta: IMeta }) => {
+const RentalHouseRequestLandlord = ({ requests, meta }: { requests: IRequest[]; meta: IMeta }) => {
     const router = useRouter();
 
-    const handleCancelRequest = async (requestId: string) => {
+    const handleRejectRequest = async (requestId: string) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -27,11 +24,11 @@ const RentalHouseRequest = ({ requests, meta }: { requests: IRequest[]; meta: IM
             showCancelButton: true,
             confirmButtonColor: "#d33",
             cancelButtonColor: "#3085d6",
-            confirmButtonText: "Yes, Cancel It!",
+            confirmButtonText: "Yes, Reject It!",
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const res = await cancelRequest(requestId);
+                    const res = await updateRequestStatus(requestId, { status: "rejected" });
 
                     if (res.success) {
                         toast.success(res.message);
@@ -45,26 +42,24 @@ const RentalHouseRequest = ({ requests, meta }: { requests: IRequest[]; meta: IM
         });
     };
 
-    const handlePayment = async (requestId: string) => {
+    const handleApprovedRequest = async (requestId: string) => {
         Swal.fire({
             title: "Are you sure?",
-            text: "You will be moved to a payment process!",
+            text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#d33",
+            confirmButtonColor: "#333",
             cancelButtonColor: "#3085d6",
-            confirmButtonText: "Yes",
+            confirmButtonText: "Yes, Approved It!",
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const loading = toast.loading("Please wait...");
                 try {
-                    const res = await createPayment({ requestId });
+                    const res = await updateRequestStatus(requestId, { status: "approved" });
 
                     if (res.success) {
-                        toast.success(res.message, { id: loading });
-                        router.push(res.data.paymentUrl);
+                        toast.success(res.message);
                     } else {
-                        toast.error(res.message, { id: loading });
+                        toast.error(res.message);
                     }
                 } catch (err: any) {
                     console.error(err);
@@ -159,32 +154,28 @@ const RentalHouseRequest = ({ requests, meta }: { requests: IRequest[]; meta: IM
                         <Eye className="w-5 h-5" />
                     </button>
 
-                    {row.original.status === "approved" &&
-                        row.original.paymentStatus === "pending" && (
-                            <Button
-                                size={"sm"}
-                                variant={"outline"}
-                                className="cursor-pointer"
-                                title="Make Payment"
-                                onClick={() => handlePayment(row.original._id)}
-                            >
-                                Make Payment
-                            </Button>
-                        )}
+                    {row.original.status === "pending" && (
+                        <Button
+                            size={"sm"}
+                            variant={"outline"}
+                            className="cursor-pointer bg-green-500"
+                            title="Approve"
+                            onClick={() => handleApprovedRequest(row.original._id)}
+                        >
+                            Approve
+                        </Button>
+                    )}
 
                     {row.original.status === "pending" && (
-                        <button
-                            className="cursor-pointer"
-                            title="Cancel Request"
-                            onClick={() => handleCancelRequest(row.original._id)}
+                        <Button
+                            size={"sm"}
+                            variant={"outline"}
+                            className="cursor-pointer bg-rose-500"
+                            title="Reject Request"
+                            onClick={() => handleRejectRequest(row.original._id)}
                         >
-                            <Badge
-                                variant={"outline"}
-                                className="text-red-500 hover:bg-red-500 hover:text-white"
-                            >
-                                Cancel Request
-                            </Badge>
-                        </button>
+                            Reject
+                        </Button>
                     )}
                 </div>
             ),
@@ -202,4 +193,4 @@ const RentalHouseRequest = ({ requests, meta }: { requests: IRequest[]; meta: IM
     );
 };
 
-export default RentalHouseRequest;
+export default RentalHouseRequestLandlord;

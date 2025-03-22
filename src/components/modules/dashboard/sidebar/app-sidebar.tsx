@@ -2,20 +2,11 @@
 
 import * as React from "react";
 import {
-    Bot,
     ClipboardList,
-    Frame,
     HomeIcon,
     LayoutDashboard,
-    LifeBuoy,
-    Map,
-    PieChart,
     PlusCircle,
-    Send,
-    Settings,
     SquareChartGantt,
-    SquareGanttChartIcon,
-    SquareTerminal,
     UserCog,
     UsersRoundIcon,
 } from "lucide-react";
@@ -36,7 +27,7 @@ import Logo from "@/assets/Logo";
 import { useUser } from "@/context/UserContext";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    const { user, setIsLoading } = useUser();
+    const { user } = useUser();
 
     const landlordMenu = [
         {
@@ -48,6 +39,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: "Manage Rental Houses",
             url: "/landlord/manage-rental-houses",
             icon: SquareChartGantt,
+        },
+        {
+            title: "Rental House Requests",
+            url: "/landlord/rental-house-request",
+            icon: ClipboardList,
         },
     ];
 
