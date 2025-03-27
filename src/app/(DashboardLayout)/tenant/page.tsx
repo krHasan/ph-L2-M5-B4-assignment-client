@@ -1,7 +1,12 @@
-const TenantDashboardPage = () => {
+import TenantDashboard from "@/components/modules/tenant/tenant-dashboard/TenantDashboard";
+import { getDashboardStates } from "@/services/Dashboard";
+
+const TenantDashboardPage = async () => {
+    const res = await getDashboardStates();
+    const { data } = res;
     return (
         <div>
-            <h1>This is TenantDashboardPage component</h1>
+            <TenantDashboard states={data} />
         </div>
     );
 };

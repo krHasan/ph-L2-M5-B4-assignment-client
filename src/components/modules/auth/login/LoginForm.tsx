@@ -126,11 +126,21 @@ export default function LoginForm() {
                 </form>
             </Form>
             <p className="text-sm text-gray-600 text-center my-3">
-                Do not have any account ?
+                Do not have any account ?{" "}
                 <Link href="/register" className="text-primary">
                     Register
                 </Link>
             </p>
+            <div className="w-full text-center mt-5 text-sm text-gray-600">
+                Click{" "}
+                <span
+                    onClick={() => router.push("/forgot-password")}
+                    className="text-blue-800 cursor-pointer font-bold"
+                >
+                    here
+                </span>{" "}
+                in case you forget your password
+            </div>
         </div>
     );
 }

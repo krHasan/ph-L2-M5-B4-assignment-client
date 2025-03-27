@@ -1,7 +1,12 @@
-const LandlordDashboardPage = () => {
+import LandlordDashboard from "@/components/modules/landlord/landlord-dashboard/LandlordDashboard";
+import { getDashboardStates } from "@/services/Dashboard";
+
+const LandlordDashboardPage = async () => {
+    const res = await getDashboardStates();
+    const { data } = res;
     return (
         <div>
-            <h1>This is LandlordDashboardPage component</h1>
+            <LandlordDashboard states={data} />
         </div>
     );
 };
