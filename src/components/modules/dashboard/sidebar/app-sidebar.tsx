@@ -66,6 +66,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             url: "/admin/manage-rental-houses",
             icon: SquareChartGantt,
         },
+        {
+            title: "Rental House Requests",
+            url: "/admin/rental-house-request",
+            icon: ClipboardList,
+        },
     ];
 
     const data = {

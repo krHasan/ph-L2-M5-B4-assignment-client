@@ -5,11 +5,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Check, Edit, Eye, Plus, SquareX, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import TablePagination from "@/components/ui/core/RentifyTable/TablePagination";
 import { IListing, IMeta } from "@/types";
 import Swal from "sweetalert2";
-import { updateListingStatus } from "@/services/Listing";
+import { deleteListing, updateListingStatus } from "@/services/Listing";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 
@@ -29,6 +28,32 @@ const ManageRentalHouseAdmin = ({ listings, meta }: { listings: IListing[]; meta
             if (result.isConfirmed) {
                 try {
                     const res = await updateListingStatus(listingId);
+
+                    if (res.success) {
+                        toast.success(res.message);
+                    } else {
+                        toast.error(res.message);
+                    }
+                } catch (err: any) {
+                    console.error(err);
+                }
+            }
+        });
+    };
+
+    const handleDelete = async (listingId: string) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await deleteListing(listingId);
 
                     if (res.success) {
                         toast.success(res.message);
@@ -122,6 +147,14 @@ const ManageRentalHouseAdmin = ({ listings, meta }: { listings: IListing[]; meta
                         <Eye className="w-5 h-5" />
                     </button>
 
+                    <button
+                        className="text-red-500 cursor-pointer"
+                        title="Delete"
+                        onClick={() => handleDelete(row.original._id)}
+                    >
+                        <Trash className="w-5 h-5" />
+                    </button>
+
                     {row.original.isActive ? (
                         <button
                             className="text-red-500 cursor-pointer"
@@ -148,15 +181,7 @@ const ManageRentalHouseAdmin = ({ listings, meta }: { listings: IListing[]; meta
         <div>
             <div className="flex items-center justify-between">
                 <h1 className="text-xl font-bold">Manage Rental Houses</h1>
-                <div className="flex items-center gap-2">
-                    <Button
-                        onClick={() => router.push("/landlord/add-rental-house")}
-                        size="sm"
-                        className="cursor-pointer"
-                    >
-                        Add New <Plus />
-                    </Button>
-                </div>
+                <div className="flex items-center gap-2"></div>
             </div>
             <RentifyTable columns={columns} data={listings || []} />
             <TablePagination totalPage={meta?.totalPage} />

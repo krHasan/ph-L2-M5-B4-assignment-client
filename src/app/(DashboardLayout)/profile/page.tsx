@@ -1,7 +1,9 @@
+import Profile from "@/components/modules/profile/Profile";
+
 const ProfilePage = () => {
     return (
         <div>
-            <h1>This is ProfilePage component</h1>
+            <Profile />
         </div>
     );
 };
