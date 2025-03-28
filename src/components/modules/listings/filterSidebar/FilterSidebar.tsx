@@ -1,17 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Star } from "lucide-react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function FilterSidebar() {
     const [rentAmount, setRentAmount] = useState([0]);
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading] = useState(false);
 
     const rentTypes = [
         { _id: "family", name: "Family" },

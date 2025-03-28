@@ -2,7 +2,7 @@
 
 import { RentifyTable } from "@/components/ui/core/RentifyTable/index";
 import { ColumnDef } from "@tanstack/react-table";
-import { Check, Edit, Eye, Plus, SquareX, Trash } from "lucide-react";
+import { Check, Eye, SquareX, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import TablePagination from "@/components/ui/core/RentifyTable/TablePagination";

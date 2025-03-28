@@ -2,14 +2,12 @@
 
 import { RentifyTable } from "@/components/ui/core/RentifyTable/index";
 import { ColumnDef } from "@tanstack/react-table";
-import { Check, Edit, Eye, Plus, SquareX, Trash } from "lucide-react";
-import Image from "next/image";
+import { Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import TablePagination from "@/components/ui/core/RentifyTable/TablePagination";
-import { IListing, IMeta, IRequest } from "@/types";
+import { IMeta, IRequest } from "@/types";
 import Swal from "sweetalert2";
-import { deleteListing, updateListingStatus } from "@/services/Listing";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";

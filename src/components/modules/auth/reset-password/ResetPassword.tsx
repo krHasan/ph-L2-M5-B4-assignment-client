@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { forgotPassword, resetPassword } from "@/services/AuthService";
+import { resetPassword } from "@/services/AuthService";
 import { useRouter } from "next/navigation";
 import { resetPasswordSchema } from "./resetPasswordValidation";
 import { zodResolver } from "@hookform/resolvers/zod";

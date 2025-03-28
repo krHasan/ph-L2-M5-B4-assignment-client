@@ -3,7 +3,6 @@ import { BlogCard } from "@/components/modules/home/BlogCard";
 import FeaturedListings from "@/components/modules/home/FeaturedListings";
 import { Hero } from "@/components/modules/home/Hero";
 import { LocationGrid } from "@/components/modules/home/LocationGrid";
-import Link from "next/link";
 
 export default function Home() {
     const locations = [

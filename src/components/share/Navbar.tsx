@@ -1,7 +1,7 @@
 "use client";
 import Logo from "@/assets/Logo";
 import { Button } from "../ui/button";
-import { Heart, LogOut, ShoppingCart } from "lucide-react";
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import {
     DropdownMenu,
@@ -16,14 +16,11 @@ import { logout } from "@/services/AuthService";
 import { useUser } from "@/context/UserContext";
 import { usePathname, useRouter } from "next/navigation";
 import { protectedRoutes } from "@/constants";
-// import { useAppSelector } from "@/redux/hooks";
-// import { orderedProductsSelector } from "@/redux/features/cartSlice";
 
 export default function Navbar() {
     const { user, setIsLoading } = useUser();
     const pathname = usePathname();
     const router = useRouter();
-    // const products = useAppSelector(orderedProductsSelector);
 
     const handleLogOut = () => {
         logout();

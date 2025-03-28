@@ -3,11 +3,7 @@ import { getValidToken } from "@/lib/verifyToken";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
-export const getAllRequests = async (
-    page?: string,
-    limit?: string,
-    query?: { [key: string]: string | string[] | undefined }
-) => {
+export const getAllRequests = async (page?: string, limit?: string) => {
     try {
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BASE_API}/requests?limit=${limit}&page=${page}`,
